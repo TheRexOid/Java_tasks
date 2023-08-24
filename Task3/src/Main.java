@@ -13,7 +13,8 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Set<Character> letterSet = Set.of('А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х');
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        Pattern pattern = Pattern.compile("^([АВЕКМНОРСТУХ]{1}[0-9]{3}\\D{2}RUS[0-9]{2})$/U");
+
+        Pattern pattern = Pattern.compile("^[АВЕКМНОРСТУХ]{1}[0-9]{3}[АВЕКМНОРСТУХ]{2}\\D{3}[0-9]{2,3}$");
 
         while(true) {
             System.out.println("Введите номер, чтобы заввершить программу введите 0");
@@ -22,6 +23,9 @@ public class Main {
             numberplate = numberplate.replaceAll(" ", "");
             Matcher matcher = pattern.matcher(numberplate);
 
+            if(numberplate.length() == 1 && numberplate.charAt(0) == '0'){
+                break;
+            }
             if(numberplate.length()<11){
                 System.out.println("! Введен несуществующий номер, номер слишком короткий !");
             }
@@ -34,7 +38,7 @@ public class Main {
             else if(!numberplate.substring(6, 9).equals("RUS")){
                 System.out.println("! Введен несуществующий номер, отсутствует код \"RUS\" !");
             }
-            else if(matcher.find()){
+            else if(!matcher.find()){
                 System.out.println("! Введен несуществующий номер, не верный формат номерного знака !");
             }
         }
